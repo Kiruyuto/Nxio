@@ -1,0 +1,82 @@
+﻿name: 'Release'
+
+on:
+  push:
+    branches: [ 'master' ]
+
+permissions: write-all
+
+jobs:
+  release-please:
+    name: 'Release-Please'
+    runs-on: [ 'ubuntu-latest' ]
+    outputs:
+        releases_created: ${{ steps.run-release-please.outputs.releases_created }}
+        tag_name: ${{ steps.run-release-please.outputs.tag_name }}
+    steps:
+      - name: 'Generate App Token'
+        uses: actions/create-github-app-token@v1
+        id: generate-token
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID}}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+      - name: 'Run release-please'
+        uses: googleapis/release-please-action@v4
+        id: run-release-please
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          config-file: .github/release-please-config.json
+          manifest-file: .github/.release-please-manifest.json
+      - name: 'Echo json'
+        run: echo "$OUTPUTS"
+        shell: bash
+        env:
+          OUTPUTS: ${{ toJSON(steps.run-release-please.outputs) }}
+
+  release-nxio:
+    name: 'Nxio - ${{ matrix.rid }} - ${{ matrix.self-contained }}'
+    runs-on: [ 'ubuntu-latest' ]
+    needs: 'release-please'
+    strategy:
+      fail-fast: false
+      matrix:
+        rid: [ 'linux-x64', 'linux-arm', 'linux-arm64', 'win-x64' ] # https://learn.microsoft.com/en-us/dotnet/core/rid-catalog
+        runtime-inclusion: [ 'true', 'false' ]
+    if: ${{ needs.release-please.outputs.releases_created }}
+    timeout-minutes: 10
+    env:
+      ARTIFACT_NAME: 'nxio-{{ matrix.rid }}-{{ matrix.self-contained }}'
+    steps:
+      - name: 'Generate App Token'
+        uses: actions/create-github-app-token@v1
+        id: generate-token
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID}}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+      - name: 'Echo artifact name'
+        run: echo Artifact name [${{ env.ARTIFACT_NAME }}]
+      - name: 'Checkout repo'
+        uses: actions/checkout@v4
+      - name: 'Setup .NET'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+      - name: 'Restore dependencies'
+        run: dotnet restore
+      - name: 'Build'
+        run: dotnet build Nxio.App/Nxio.App.csproj --no-restore --configuration Release --verbosity m
+      - name: 'Publish'
+        run: dotnet publish Nxio.App/Nxio.App.csproj --no-restore --no-build --configuration Release --verbosity m --output ./Publish --arch {{ matrix.rid }} --self-contained {{ matrix.runtime-inclusion }}
+      - name: "Upload build artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: '{{ env.ARTIFACT_NAME }}'
+          compression-level: 0
+          path: ./Publish/**
+          if-no-files-found: error
+      - name: 'Zip artifact'
+        run: zip -r ./{{ env.ARTIFACT_NAME }}.zip ./Publish
+      - name: 'Upload artifact to GitHub Release'
+        run: gh release upload '${{ needs.release-please.outputs.tag_name }}' ./{{ env.ARTIFACT_NAME }}.zip
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}

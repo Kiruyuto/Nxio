@@ -1,0 +1,100 @@
+﻿name: 'Semantic PRs'
+
+on:
+  pull_request_target:
+    branches: [ 'master' ]
+
+permissions:
+  pull-requests: write
+  statuses: write
+
+jobs:
+  add-pr-labels:
+    runs-on: [ 'ubuntu-latest' ]
+    steps:
+      - name: 'Run script'
+        uses: actions/github-script@v7
+        env:
+          PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
+        with:
+          script: |
+            const labelsToAdd = [];
+
+            const pullRequest = {
+              number: ${{ github.event.pull_request.number }},
+              title: process.env.PULL_REQUEST_TITLE,
+              labelsNames: ${{ toJson(github.event.pull_request.labels.*.name) }}
+            };
+
+            const scopeToLabel = {
+              core: 'CORE',
+              app: 'APP',
+              docs: 'DOCS',
+              ci: 'CI',
+              tests: 'TESTS',
+              wiki: 'WIKI',
+              api: 'API',
+              deps: 'dependencies'
+            };
+
+            const regex = /\(([^)]+)\)/;
+
+            for (const [type, label] of Object.entries(scopeToLabel)) {
+              const match = pullRequest.title.match(regex);
+              if (match != null && match[1] != null && match[1] === type) {
+                labelsToAdd.push(label);
+                break;
+              }
+            }
+
+            if (labelsToAdd.length > 0) {
+              github.rest.issues.addLabels({
+                issue_number: pullRequest.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: labelsToAdd
+              });
+            }
+
+  validate-title:
+    runs-on: [ 'ubuntu-latest' ]
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        with:
+          wip: true
+          types: |
+            feat
+            fix
+            ci
+            chore
+            docs
+            test
+            style
+            refactor
+            perf
+          scopes: |
+            core
+            app
+            docs
+            ci
+            tests
+            deps
+            wiki
+            api
+          requireScope: true
+          subjectPattern: ^([A-Z]).+$
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title "{title}" didn't match the configured pattern.
+            Please ensure that the subject starts with an uppercase character => In other words matches the pattern: ^([A-Z]).+$
+            feat(ui): Add `Button` component
+            ^    ^    ^
+            |    |    |__ Subject
+            |    |_______ Scope
+            |____________ Type
+          ignoreLabels: |
+            autorelease: pending
+            autorelease: tagged
+            autorelease: snapshot
+            autorelease: published
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
