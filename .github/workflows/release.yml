@@ -42,7 +42,7 @@ jobs:
       matrix:
         rid: [ 'linux-x64', 'linux-arm', 'linux-arm64', 'win-x64' ] # https://learn.microsoft.com/en-us/dotnet/core/rid-catalog
         runtime-inclusion: [ 'true', 'false' ]
-    if: ${{ needs.release-please.outputs.releases_created }}
+    if: needs.release-please.outputs.releases_created == true
     timeout-minutes: 10
     env:
       ARTIFACT_NAME: 'nxio-{{ matrix.rid }}-{{ matrix.self-contained }}'
