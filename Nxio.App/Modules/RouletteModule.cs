@@ -52,16 +52,16 @@ public class RouletteModule(ILogger<RouletteModule> logger) : ApplicationCommand
 
         if (triggerRolePos.Any(x => (x.Permissions & Permissions.Administrator) != 0))
         {
-            embed.Description = $"<@{Context.User.Id}> tried to hit <@{targetUser.Id}>` but missed!\nUnfortunately, they are **immune** to the consequences!";
+            embed.Description = $"<@{Context.User.Id}> tried to hit <@{targetUser.Id}> but missed!\nUnfortunately, they are **immune** to the consequences!";
         }
         else
         {
             await Context.Guild!.ModifyUserAsync(Context.User.Id, op => { op.WithTimeOutUntil(DateTimeOffset.UtcNow.AddMinutes(timeInMinutes)); });
-            embed.Description = $"<@{Context.User.Id}> tried to hit `{targetUser.Username}` but missed!\nFor being a bad shot, they have been muted for {timeInMinutes} minutes!";
+            embed.Description = $"<@{Context.User.Id}> tried to hit <@{targetUser.Id}> but missed!\nFor being a bad shot, they have been muted for {timeInMinutes} minutes!";
         }
 
         embed.Color = new Color(255, 0, 0);
-        return new InteractionMessageProperties { Embeds = [embed], Flags = MessageFlags.Urgent };
+        return new InteractionMessageProperties { Embeds = [embed] };
     }
 
     [SlashCommand("test-luck", "Test your luck!", GuildId = 837986516499955732)]
