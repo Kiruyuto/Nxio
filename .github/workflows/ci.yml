@@ -34,8 +34,8 @@ jobs:
       - name: "Restore dependencies"
         run: dotnet restore
       - name: "Format"
-        run: dotnet format --severity info --verbosity diag --exclude ./Nxio.Core/Database/Migrations/ --verify-no-changes
+        run: dotnet format --severity info --verbosity diagnostic --exclude ./Nxio.Core/Database/Migrations/ --verify-no-changes
       - name: "Build"
-        run: dotnet build --no-restore --configuration Release --verbosity n
+        run: dotnet build --no-restore --configuration Release --verbosity minimal
       - name: "Test"
-        run: dotnet test --no-build --no-restore --configuration Release --verbosity n
+        run: dotnet test --no-build --no-restore --configuration Release --verbosity normal
