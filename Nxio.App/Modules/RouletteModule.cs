@@ -4,9 +4,9 @@ using NetCord;
 using NetCord.Rest;
 using NetCord.Services.ApplicationCommands;
 
-namespace Nxio.App.Commands;
+namespace Nxio.App.Modules;
 
-public class RouletteModule(RestClient client, ILogger<RouletteModule> logger) : ApplicationCommandModule<ApplicationCommandContext>
+public class RouletteModule(ILogger<RouletteModule> logger) : ApplicationCommandModule<ApplicationCommandContext>
 {
     private const int HitChanceMax = 15;
 
@@ -36,7 +36,7 @@ public class RouletteModule(RestClient client, ILogger<RouletteModule> logger) :
         var embed = new EmbedProperties
         {
             Author = new EmbedAuthorProperties { Name = Context.User.Username, IconUrl = Context.User.GetAvatarUrl()?.ToString() },
-            Footer = new EmbedFooterProperties { Text = $"Current hit chance: {HitChanceMax}% - Pseudorandom ticks" },
+            Footer = new EmbedFooterProperties { Text = $"Current hit chance: {HitChanceMax}%" },
         };
 
         var isHit = new Random().Next(0, 100);
@@ -45,14 +45,14 @@ public class RouletteModule(RestClient client, ILogger<RouletteModule> logger) :
             await Context.Guild!.ModifyUserAsync(targetUser.Id, op => { op.WithTimeOutUntil(DateTimeOffset.UtcNow.AddMinutes(timeInMinutes)); });
 
             embed.Color = new Color(0, 255, 0);
-            embed.Description = $"`{targetUser.Username}` was hit by <@{Context.User.Id}> and has been muted for {timeInMinutes} minutes!";
+            embed.Description = $"<@{targetUser.Id}> was hit by <@{Context.User.Id}> and has been muted for {timeInMinutes} minutes!";
 
             return new InteractionMessageProperties { Embeds = [embed] };
         }
 
         if (triggerRolePos.Any(x => (x.Permissions & Permissions.Administrator) != 0))
         {
-            embed.Description = $"<@{Context.User.Id}> tried to hit `{targetUser.Username}` but missed!\nUnfortunately, they are **immune** to the consequences!";
+            embed.Description = $"<@{Context.User.Id}> tried to hit <@{targetUser.Id}>` but missed!\nUnfortunately, they are **immune** to the consequences!";
         }
         else
         {
@@ -65,7 +65,7 @@ public class RouletteModule(RestClient client, ILogger<RouletteModule> logger) :
     }
 
     [SlashCommand("test-luck", "Test your luck!", GuildId = 837986516499955732)]
-    public InteractionMessageProperties TestLuck([SlashCommandParameter(Name = "num", Description = "Times to generate")] int num)
+    public InteractionMessageProperties TestLuck([SlashCommandParameter(Name = "num", Description = "Times to generate", MinValue = 1, MaxValue = 20)] int num)
     {
         var str = new StringBuilder();
 
@@ -86,5 +86,32 @@ public class RouletteModule(RestClient client, ILogger<RouletteModule> logger) :
         };
 
         return new InteractionMessageProperties { Embeds = [embed], Flags = MessageFlags.Ephemeral };
+    }
+
+    [SlashCommand("list-timeouts", "Display all currently muted users!", GuildId = 837986516499955732)]
+    public InteractionMessageProperties GetAllTimeouts()
+    {
+        const int take = 30;
+        var users = Context.Guild!.Users
+            .Where(x => x.Value.TimeOutUntil != null && x.Value.TimeOutUntil > DateTimeOffset.UtcNow)
+            .OrderByDescending(x => x.Value.TimeOutUntil)
+            .Take(take)
+            .ToList();
+        if (users.Count == 0) return new InteractionMessageProperties { Content = "No users are currently muted!", Flags = MessageFlags.Ephemeral };
+
+
+        var str = new StringBuilder();
+        foreach (var u in users.Select(x => x.Value))
+            str.AppendLine(CultureInfo.InvariantCulture, $"<@{u.Id}> - Expires <t:{u.TimeOutUntil!.Value.ToUnixTimeSeconds()}:R>\n");
+
+        var embed = new EmbedProperties
+        {
+            Title = $"Currently muted: {users.Count}",
+            Description = str.ToString(),
+            Color = new Color(0, 255, 0),
+            Footer = new EmbedFooterProperties { Text = $"Displaying only first {take} records" },
+        };
+
+        return new InteractionMessageProperties { Embeds = [embed] };
     }
 }
