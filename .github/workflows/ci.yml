@@ -36,6 +36,6 @@ jobs:
       - name: "Format"
         run: dotnet format --severity info -v diag --exclude ./Nxio.Core/Database/Migrations/ --verify-no-changes
       - name: "Build"
-        run: dotnet build --no-restore --configuration Release -v m
+        run: dotnet build --no-restore --configuration Release --verbosity m
       - name: "Test"
-        run: dotnet test --no-build --no-restore --configuration Release -v n
+        run: dotnet test --no-build --no-restore --configuration Release --verbosity n
