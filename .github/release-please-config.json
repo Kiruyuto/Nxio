@@ -8,10 +8,10 @@
   "include-component-in-tag": true,
   "pull-request-footer": "",
   "component-no-space": true,
-  "separate-pull-requests": false,
+  "separate-pull-requests": true,
   "packages": {
     ".": {
-      "component": "nxio",
+      "component": "bot",
       "changelog-path": "CHANGELOG.md",
       "release-type": "simple",
       "bump-minor-pre-major": false,

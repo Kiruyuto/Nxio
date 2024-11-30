@@ -28,7 +28,7 @@ jobs:
 
             const scopeToLabel = {
               core: 'CORE',
-              app: 'APP',
+              bot: 'BOT',
               docs: 'DOCS',
               ci: 'CI',
               tests: 'TESTS',
@@ -74,7 +74,7 @@ jobs:
             perf
           scopes: |
             core
-            app
+            bot
             docs
             ci
             tests
