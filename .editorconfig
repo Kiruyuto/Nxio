@@ -76,6 +76,8 @@ resharper_class_never_instantiated_global_highlighting = none
 resharper_redundant_using_directive_highlighting = warning
 resharper_unused_type_global_highlighting = warning
 resharper_csharp_max_line_length = 240
+resharper_max_attribute_length_for_same_line = 120
 
 # SonarLint
 dotnet_diagnostic.S1135.severity = none # S1135: Track uses of TODO
+dotnet_diagnostic.S125.severity = none # S125: Sections of code should not be commented out

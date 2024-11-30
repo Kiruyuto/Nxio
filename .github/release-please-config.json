@@ -22,6 +22,11 @@
           "type": "xml",
           "path": "/backend/Nxio.App/Nxio.App.csproj",
           "xpath": "//Project/PropertyGroup/Version"
+        },
+        {
+          "type": "xml",
+          "path": "/backend/Nxio.Core/Nxio.Core.csproj",
+          "xpath": "//Project/PropertyGroup/Version"
         }
       ]
     }
