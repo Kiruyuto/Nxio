@@ -1,0 +1,6 @@
+﻿services:
+  nxio.app:
+    image: nxio.app
+    build:
+      context: .
+      dockerfile: Nxio.App/Dockerfile
