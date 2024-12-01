@@ -63,6 +63,7 @@ dotnet_style_qualification_for_method = false
 # dotnet_diagnostic.CA1065.severity = none # CA1065: Do not raise exceptions in unexpected locations
 # dotnet_diagnostic.CA1032.severity = none # CA1032: Implement standard exception constructors
 dotnet_diagnostic.CA1848.severity = none # CA1848: Use the LoggerMessage delegates
+dotnet_diagnostic.CA2208.severity = none # CA2208: Instantiate argument exceptions correctly
 # dotnet_diagnostic.CA1034.severity = none # CA1034: Nested types should not be visible
 dotnet_diagnostic.CS1591.severity = none # CS1591: Missing XML comment for publicly visible type or member
 # dotnet_diagnostic.IDE0058.severity = none # IDE0058: Remove unnecessary expression value
@@ -83,3 +84,4 @@ resharper_max_attribute_length_for_same_line = 120
 # SonarLint
 dotnet_diagnostic.S1135.severity = none # S1135: Track uses of TODO
 dotnet_diagnostic.S125.severity = none # S125: Sections of code should not be commented out
+dotnet_diagnostic.S3928.severity = none # S3928: Parameter names used into ArgumentException constructors should match an existing one

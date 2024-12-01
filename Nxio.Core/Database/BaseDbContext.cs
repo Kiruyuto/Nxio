@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Nxio.Core.Database.Models;
 
 namespace Nxio.Core.Database;
 
@@ -9,4 +10,7 @@ public class BaseDbContext(DbContextOptions<BaseDbContext> options) : DbContext(
         modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         base.OnModelCreating(modelBuilder);
     }
+
+    public DbSet<CoinMessage> CoinMessages { get; set; }
+    public DbSet<CoinReaction> CoinReactions { get; set; }
 }
