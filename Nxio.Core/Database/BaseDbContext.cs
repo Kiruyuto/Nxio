@@ -11,6 +11,6 @@ public class BaseDbContext(DbContextOptions<BaseDbContext> options) : DbContext(
         base.OnModelCreating(modelBuilder);
     }
 
-    public DbSet<CoinMessage> CoinMessages { get; set; }
-    public DbSet<CoinReaction> CoinReactions { get; set; }
+    public DbSet<CoinMessage> CoinMessages { get; set; } = default!;
+    public DbSet<CoinReaction> CoinReactions { get; set; } = default!;
 }

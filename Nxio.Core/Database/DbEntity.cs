@@ -1,4 +1,4 @@
-﻿namespace Nxio.Core;
+﻿namespace Nxio.Core.Database;
 
 public class DbEntity<T>
 {

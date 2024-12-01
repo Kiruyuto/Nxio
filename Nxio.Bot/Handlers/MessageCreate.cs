@@ -10,7 +10,7 @@ namespace Nxio.Bot.Handlers;
 [GatewayEvent(nameof(GatewayClient.MessageCreate))]
 public class MessageCreate(ILogger<MessageCreate> logger, BaseDbContext context) : IGatewayEventHandler<Message>
 {
-    private const int CoinAppearChance = 5;
+    private const int CoinAppearChance = 2;
 
     public async ValueTask HandleAsync(Message msg)
     {
