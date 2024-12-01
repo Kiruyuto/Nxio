@@ -1,6 +1,46 @@
-﻿services:
-  nxio.app:
-    image: nxio.app
+﻿name: nxio
+networks:
+  nxio-network:
+    driver: bridge
+volumes:
+  nxio-sql-volume:
+
+services:
+  bot:
+    container_name: nxio-bot
+    image: nxio.bot
     build:
       context: .
-      dockerfile: Nxio.App/Dockerfile
+      dockerfile: Nxio.Bot/Dockerfile
+
+  db:
+    container_name: nxio-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: always
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/opt/mssql-tools18/bin/sqlcmd",
+          "-U",
+          "sa",
+          "-P",
+          "Password123",
+          "-Q",
+          "SELECT 1",
+          "-C"
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+      disable: false
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Password123"
+    volumes:
+      - nxio-sql-volume:/var/opt/mssql
+    networks:
+      - nxio-network
