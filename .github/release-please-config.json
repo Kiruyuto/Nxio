@@ -14,18 +14,16 @@
       "component": "bot",
       "changelog-path": "CHANGELOG.md",
       "release-type": "simple",
-      "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": true,
       "component-no-space": true,
       "extra-files": [
         {
           "type": "xml",
-          "path": "/backend/Nxio.App/Nxio.App.csproj",
+          "path": "/Nxio.App/Nxio.App.csproj",
           "xpath": "//Project/PropertyGroup/Version"
         },
         {
           "type": "xml",
-          "path": "/backend/Nxio.Core/Nxio.Core.csproj",
+          "path": "/Nxio.Core/Nxio.Core.csproj",
           "xpath": "//Project/PropertyGroup/Version"
         }
       ]
