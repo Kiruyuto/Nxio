@@ -10,7 +10,7 @@ public class RouletteModule(ILogger<RouletteModule> logger) : ApplicationCommand
 {
     private const int HitChanceMax = 15;
 
-    [SlashCommand("roulette", "Play a discord version of Russian Roulette!", GuildId = 837986516499955732)]
+    [SlashCommand("roulette", "Play a discord version of Russian Roulette!", Contexts = [InteractionContextType.Guild])]
     public async Task<InteractionMessageProperties> Roulette(
         [SlashCommandParameter(Name = "user", Description = "Target user")] GuildUser targetUser,
         [SlashCommandParameter(Name = "duration", Description = "Duration to timeout target, in minutes", MinValue = 1, MaxValue = 15)]
@@ -64,7 +64,7 @@ public class RouletteModule(ILogger<RouletteModule> logger) : ApplicationCommand
         return new InteractionMessageProperties { Embeds = [embed] };
     }
 
-    [SlashCommand("test-luck", "Test your luck!", GuildId = 837986516499955732)]
+    [SlashCommand("test-luck", "Test your luck!", Contexts = [InteractionContextType.Guild])]
     public InteractionMessageProperties TestLuck([SlashCommandParameter(Name = "num", Description = "Times to generate", MinValue = 1, MaxValue = 20)] int num)
     {
         var str = new StringBuilder();
@@ -88,7 +88,7 @@ public class RouletteModule(ILogger<RouletteModule> logger) : ApplicationCommand
         return new InteractionMessageProperties { Embeds = [embed], Flags = MessageFlags.Ephemeral };
     }
 
-    [SlashCommand("list-timeouts", "Display all currently muted users!", GuildId = 837986516499955732)]
+    [SlashCommand("list-timeouts", "Display all currently muted users!", Contexts = [InteractionContextType.Guild])]
     public InteractionMessageProperties GetAllTimeouts()
     {
         const int take = 30;
