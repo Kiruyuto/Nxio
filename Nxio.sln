@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nxio.App", "Nxio.App\Nxio.App.csproj", "{D936EBCF-A012-4698-AA78-864C84905536}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nxio.Bot", "Nxio.Bot\Nxio.Bot.csproj", "{D936EBCF-A012-4698-AA78-864C84905536}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4CC132C9-B926-46B0-A319-06F8B7465777}"
 	ProjectSection(SolutionItems) = preProject

@@ -18,7 +18,7 @@
       "extra-files": [
         {
           "type": "xml",
-          "path": "/Nxio.App/Nxio.App.csproj",
+          "path": "/Nxio.Bot/Nxio.Bot.csproj",
           "xpath": "//Project/PropertyGroup/Version"
         },
         {

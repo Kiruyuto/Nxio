@@ -4,7 +4,7 @@ using NetCord;
 using NetCord.Rest;
 using NetCord.Services.ApplicationCommands;
 
-namespace Nxio.App.Modules;
+namespace Nxio.Bot.Modules;
 
 public class RouletteModule(ILogger<RouletteModule> logger) : ApplicationCommandModule<ApplicationCommandContext>
 {

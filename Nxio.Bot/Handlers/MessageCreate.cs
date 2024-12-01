@@ -1,7 +1,7 @@
 ﻿using NetCord.Gateway;
 using NetCord.Hosting.Gateway;
 
-namespace Nxio.App.Handlers;
+namespace Nxio.Bot.Handlers;
 
 [GatewayEvent(nameof(GatewayClient.MessageCreate))]
 public class MessageCreate(ILogger<MessageCreate> logger) : IGatewayEventHandler<Message>

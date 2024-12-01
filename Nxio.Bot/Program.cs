@@ -5,7 +5,7 @@ using NetCord.Hosting.Services;
 using NetCord.Hosting.Services.ApplicationCommands;
 using NetCord.Services.ApplicationCommands;
 
-namespace Nxio.App;
+namespace Nxio.Bot;
 
 public static class Program
 {

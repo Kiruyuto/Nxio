@@ -7,17 +7,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Nxio.App/Nxio.App.csproj", "Nxio.App/"]
-RUN dotnet restore "Nxio.App/Nxio.App.csproj"
+COPY ["Nxio.Bot/Nxio.Bot.csproj", "Nxio.Bot/"]
+RUN dotnet restore "Nxio.Bot/Nxio.Bot.csproj"
 COPY . .
-WORKDIR "/src/Nxio.App"
-RUN dotnet build "Nxio.App.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/Nxio.Bot"
+RUN dotnet build "Nxio.Bot.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "Nxio.App.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Nxio.Bot.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Nxio.App.dll"]
+ENTRYPOINT ["dotnet", "Nxio.Bot.dll"]
