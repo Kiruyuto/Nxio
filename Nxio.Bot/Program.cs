@@ -25,7 +25,7 @@ public static class Program
 #if DEBUG
                 op.EnableSensitiveDataLogging();
 #endif
-            }, ServiceLifetime.Singleton);
+            });
 
         builder.Services
             .AddGatewayEventHandlers(typeof(Program).Assembly)

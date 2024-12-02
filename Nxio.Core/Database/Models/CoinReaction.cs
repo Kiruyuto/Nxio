@@ -2,8 +2,8 @@
 
 public class CoinReaction : DbEntity<Guid>
 {
-    public required Guid UserId { get; set; }
-    public virtual User? User { get; set; }
-    public required Guid CoinMessageId { get; set; }
-    public virtual CoinMessage? CoinMessage { get; set; }
+    public Guid UserId { get; set; }
+    public virtual User User { get; set; } = default!;
+    public Guid CoinMessageId { get; set; }
+    public virtual CoinMessage CoinMessage { get; set; } = default!;
 }

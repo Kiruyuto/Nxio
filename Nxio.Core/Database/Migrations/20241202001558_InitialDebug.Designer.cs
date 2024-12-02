@@ -12,7 +12,7 @@ using Nxio.Core.Database;
 namespace Nxio.Core.Database.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20241201194913_InitialDebug")]
+    [Migration("20241202001558_InitialDebug")]
     partial class InitialDebug
     {
         /// <inheritdoc />
@@ -72,12 +72,17 @@ namespace Nxio.Core.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Coins")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
                     b.Property<decimal>("UserDiscordId")
                         .HasColumnType("decimal(20,0)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Nxio.Core.Database.Models.CoinReaction", b =>

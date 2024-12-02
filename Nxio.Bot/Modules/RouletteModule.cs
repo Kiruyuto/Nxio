@@ -17,8 +17,7 @@ public class RouletteModule(ILogger<RouletteModule> logger) : ApplicationCommand
         int timeInMinutes
     )
     {
-        logger.LogInformation("{User} is playing Russian Roulette!", targetUser.Username);
-        logger.LogInformation("Guild: {Guild} | User: {User}", Context.Guild!.Name, Context.User.Username);
+        logger.LogDebug("Guild: {Guild} | User: {User} ({UserId})", Context.Guild!.Name, Context.User.Username, Context.User.Id);
 
         if (targetUser.Id == Context.User.Id) return new InteractionMessageProperties { Content = "You can't shoot yourself", Flags = MessageFlags.Ephemeral };
         if (targetUser.IsBot) return new InteractionMessageProperties { Content = "You can't shoot a bot!", Flags = MessageFlags.Ephemeral };
@@ -36,13 +35,15 @@ public class RouletteModule(ILogger<RouletteModule> logger) : ApplicationCommand
         var embed = new EmbedProperties
         {
             Author = new EmbedAuthorProperties { Name = Context.User.Username, IconUrl = Context.User.GetAvatarUrl()?.ToString() },
-            Footer = new EmbedFooterProperties { Text = $"Current hit chance: {HitChanceMax}%" },
+            Footer = new EmbedFooterProperties { Text = $"Current hit chance: {HitChanceMax}%" }
         };
 
         var isHit = new Random().Next(0, 100);
+        logger.LogDebug("Rolled {Roll} for {User}", isHit, targetUser.Username);
         if (isHit < HitChanceMax)
         {
-            await Context.Guild!.ModifyUserAsync(targetUser.Id, op => { op.WithTimeOutUntil(DateTimeOffset.UtcNow.AddMinutes(timeInMinutes)); });
+            if (Context.Guild == null) return new InteractionMessageProperties { Content = "Fetching context failed!\nPlease report it to the author!", Flags = MessageFlags.Ephemeral };
+            await Context.Guild.ModifyUserAsync(targetUser.Id, op => { op.WithTimeOutUntil(DateTimeOffset.UtcNow.AddMinutes(timeInMinutes)); });
 
             embed.Color = new Color(0, 255, 0);
             embed.Description = $"<@{targetUser.Id}> was hit by <@{Context.User.Id}> and has been muted for {timeInMinutes} minutes!";
@@ -82,7 +83,7 @@ public class RouletteModule(ILogger<RouletteModule> logger) : ApplicationCommand
             Title = $"Total hits: {hits}/{num}",
             Description = str.ToString(),
             Color = new Color(0, 255, 0),
-            Footer = new EmbedFooterProperties { Text = $"Current hit chance: {HitChanceMax}%" },
+            Footer = new EmbedFooterProperties { Text = $"Current hit chance: {HitChanceMax}%" }
         };
 
         return new InteractionMessageProperties { Embeds = [embed], Flags = MessageFlags.Ephemeral };
@@ -109,7 +110,7 @@ public class RouletteModule(ILogger<RouletteModule> logger) : ApplicationCommand
             Title = $"Currently muted: {users.Count}",
             Description = str.ToString(),
             Color = new Color(0, 255, 0),
-            Footer = new EmbedFooterProperties { Text = $"Displaying only first {take} records" },
+            Footer = new EmbedFooterProperties { Text = $"Displaying only first {take} records" }
         };
 
         return new InteractionMessageProperties { Embeds = [embed] };

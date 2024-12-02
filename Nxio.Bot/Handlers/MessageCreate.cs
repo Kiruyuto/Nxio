@@ -8,7 +8,7 @@ using Nxio.Core.Database.Models;
 namespace Nxio.Bot.Handlers;
 
 [GatewayEvent(nameof(GatewayClient.MessageCreate))]
-public class MessageCreate(ILogger<MessageCreate> logger, BaseDbContext context) : IGatewayEventHandler<Message>
+public class MessageCreate(ILogger<MessageCreate> logger, IServiceProvider serviceProvider) : IGatewayEventHandler<Message>
 {
     private const int CoinAppearChance = 2;
 
@@ -23,6 +23,8 @@ public class MessageCreate(ILogger<MessageCreate> logger, BaseDbContext context)
         if (roll < CoinAppearChance)
         {
             await msg.AddReactionAsync(new ReactionEmojiProperties("coin", 1312832564788068512));
+            using var scope = serviceProvider.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<BaseDbContext>();
             await context.CoinMessages.AddAsync(new CoinMessage
             {
                 GuildId = msg.GuildId!.Value,

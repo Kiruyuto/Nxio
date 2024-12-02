@@ -24,15 +24,16 @@ namespace Nxio.Core.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserDiscordId = table.Column<decimal>(type: "decimal(20,0)", nullable: false)
+                    UserDiscordId = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
+                    Coins = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,9 +54,9 @@ namespace Nxio.Core.Database.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CoinReactions_User_UserId",
+                        name: "FK_CoinReactions_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -87,7 +88,7 @@ namespace Nxio.Core.Database.Migrations
                 name: "CoinMessages");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users");
         }
     }
 }
