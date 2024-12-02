@@ -8,8 +8,6 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = false
 
-[Nxio.Core/Database/Migrations/*]
-generated_code = true
 
 [*.md]
 trim_trailing_whitespace = false
@@ -85,3 +83,7 @@ resharper_max_attribute_length_for_same_line = 120
 dotnet_diagnostic.S1135.severity = none # S1135: Track uses of TODO
 dotnet_diagnostic.S125.severity = none # S125: Sections of code should not be commented out
 dotnet_diagnostic.S3928.severity = none # S3928: Parameter names used into ArgumentException constructors should match an existing one
+
+[**/Migrations/*]
+generated_code = true
+dotnet_diagnostic.IDE0005.severity = none # IDE0005: Excluded for migrations
