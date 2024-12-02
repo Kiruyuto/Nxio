@@ -24,7 +24,7 @@ public class CoinsModule(ILogger<CoinsModule> logger, IServiceProvider servicePr
         var usr = await context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.UserDiscordId == user.Id);
         return usr == null
             ? new InteractionMessageProperties { Content = "User has no coins!", Flags = MessageFlags.Ephemeral }
-            : new InteractionMessageProperties { Content = $"<@{user.Id}> has [**{usr.Coins}**] coins!" };
+            : new InteractionMessageProperties { Content = $"<@{user.Id}> has [**{usr.Coins}**] coins", Flags = MessageFlags.Ephemeral };
     }
 
     [SlashCommand("coins-leaderboard", "List users with most coins on the server!", Contexts = [InteractionContextType.Guild])]
@@ -41,15 +41,11 @@ public class CoinsModule(ILogger<CoinsModule> logger, IServiceProvider servicePr
 
         var stringBuilder = new StringBuilder();
 
-        for (var i = 0; i < usrLst.Count; i++)
-        {
-            var u = usrLst[i];
-            stringBuilder.AppendLine(CultureInfo.InvariantCulture, $"{i + 1}. <@{u.UserDiscordId}> - **{u.Coins}** coins\n");
-        }
+        foreach (var u in usrLst)
+            stringBuilder.AppendLine(CultureInfo.InvariantCulture, $"<@{u.UserDiscordId}> - **{u.Coins}** coins\n");
 
         var embed = new EmbedProperties
         {
-            Author = new EmbedAuthorProperties { Name = Context.User.Username, IconUrl = Context.User.GetAvatarUrl()?.ToString() },
             Description = stringBuilder.ToString(),
             Color = new Color(0, 255, 0),
             Footer = new EmbedFooterProperties { Text = $"Users with 1+ coin: {userWithCoinsCount}" }
