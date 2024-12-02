@@ -8,7 +8,7 @@ using Nxio.Core.Database;
 
 namespace Nxio.Bot.Modules;
 
-public class CoinsModule(ILogger<CoinsModule> logger, IServiceProvider serviceProvider) : ApplicationCommandModule<ApplicationCommandContext>
+public class CoinsModule(ILogger<CoinsModule> logger, BaseDbContext context) : ApplicationCommandModule<ApplicationCommandContext>
 {
     [SlashCommand("coins", "Check your or someones else coin balance!", Contexts = [InteractionContextType.Guild])]
     public async Task<InteractionMessageProperties> Coins(
@@ -17,9 +17,6 @@ public class CoinsModule(ILogger<CoinsModule> logger, IServiceProvider servicePr
         logger.LogDebug("Guild: {Guild} | User: {User} ({UserId})", Context.Guild!.Name, Context.User.Username, Context.User.Id);
 
         var user = targetUser ?? Context.User;
-
-        using var scope = serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<BaseDbContext>();
 
         var usr = await context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.UserDiscordId == user.Id);
         return usr == null
@@ -31,9 +28,6 @@ public class CoinsModule(ILogger<CoinsModule> logger, IServiceProvider servicePr
     public async Task<InteractionMessageProperties> CoinsLeaderboard()
     {
         logger.LogDebug("Guild: {Guild} | User: {User} ({UserId})", Context.Guild!.Name, Context.User.Username, Context.User.Id);
-
-        using var scope = serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<BaseDbContext>();
 
         var usrLst = await context.Users.AsNoTracking().OrderByDescending(x => x.Coins).Take(10).ToListAsync();
         if (usrLst.Count == 0) return new InteractionMessageProperties { Content = "No users found!", Flags = MessageFlags.Ephemeral };
