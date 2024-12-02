@@ -13,6 +13,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
         builder.Property(x => x.UserDiscordId).IsRequired();
         builder.Property(x => x.Coins).IsRequired().HasDefaultValue(0);
-        builder.HasMany(x => x.CoinReactions).WithOne(x => x.User).HasForeignKey(x => x.UserId);
+
+        builder
+            .HasMany(x => x.CoinReactions)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .HasMany(x => x.Upgrades)
+            .WithMany(x => x.Users);
     }
 }

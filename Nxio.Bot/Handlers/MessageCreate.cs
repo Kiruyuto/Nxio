@@ -23,7 +23,7 @@ public class MessageCreate(ILogger<MessageCreate> logger, IServiceProvider servi
         if (roll < CoinAppearChance)
         {
             await msg.AddReactionAsync(new ReactionEmojiProperties("coin", 1312832564788068512));
-            using var scope = serviceProvider.CreateScope();
+            await using var scope = serviceProvider.CreateAsyncScope();
             var context = scope.ServiceProvider.GetRequiredService<BaseDbContext>();
             await context.CoinMessages.AddAsync(new CoinMessage
             {

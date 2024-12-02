@@ -6,5 +6,5 @@ public class User : DbEntity<Guid>
     public required int Coins { get; set; }
     public virtual List<CoinReaction> CoinReactions { get; set; } = [];
 
-    // TODO: Add items & Upgrades
+    public virtual List<Upgrade> Upgrades { get; set; } = [];
 }

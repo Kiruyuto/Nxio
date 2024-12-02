@@ -19,6 +19,7 @@ public class CoinMessageConfiguration : IEntityTypeConfiguration<CoinMessage>
         builder
             .HasMany(x => x.Reactions)
             .WithOne(x => x.CoinMessage)
-            .HasForeignKey(x => x.CoinMessageId);
+            .HasForeignKey(x => x.CoinMessageId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

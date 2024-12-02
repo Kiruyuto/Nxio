@@ -22,7 +22,10 @@ public class MessageReactionAdd(ILogger<MessageReactionAdd> logger, IServiceProv
         var coinMsg = await context.CoinMessages.FirstOrDefaultAsync(x => x.MessageId == args.MessageId);
         if (coinMsg == null) return;
 
-        var usr = await context.Users.Include(x => x.CoinReactions).ThenInclude(coinReaction => coinReaction.CoinMessage).FirstOrDefaultAsync(x => x.UserDiscordId == args.User.Id);
+        var usr = await context.Users
+            .Include(x => x.CoinReactions)
+            .ThenInclude(coinReaction => coinReaction.CoinMessage)
+            .FirstOrDefaultAsync(x => x.UserDiscordId == args.User.Id);
         if (usr == null)
         {
             usr = new User
@@ -41,8 +44,6 @@ public class MessageReactionAdd(ILogger<MessageReactionAdd> logger, IServiceProv
 
             await context.Users.AddAsync(usr);
             await context.SaveChangesAsync();
-
-
         }
         else
         {
@@ -50,8 +51,9 @@ public class MessageReactionAdd(ILogger<MessageReactionAdd> logger, IServiceProv
                 return;
 
             usr.Coins++;
+            usr.CoinReactions.Add(new CoinReaction { CoinMessage = coinMsg, User = usr });
         }
 
-        await context.SaveChangesAsync();
+        if (context.ChangeTracker.HasChanges()) await context.SaveChangesAsync();
     }
 }

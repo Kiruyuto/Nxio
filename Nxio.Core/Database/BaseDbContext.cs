@@ -14,4 +14,5 @@ public class BaseDbContext(DbContextOptions<BaseDbContext> options) : DbContext(
     public DbSet<CoinMessage> CoinMessages { get; set; } = default!;
     public DbSet<CoinReaction> CoinReactions { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;
+    public DbSet<Upgrade> Upgrades { get; set; } = default!;
 }
