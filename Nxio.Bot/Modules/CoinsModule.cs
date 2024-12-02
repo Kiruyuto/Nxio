@@ -12,7 +12,7 @@ public class CoinsModule(ILogger<CoinsModule> logger, IServiceProvider servicePr
 {
     [SlashCommand("coins", "Check your or someones else coin balance!", Contexts = [InteractionContextType.Guild])]
     public async Task<InteractionMessageProperties> Coins(
-        [SlashCommandParameter(Name = "user", Description = "Target user. Checks self balance if not provided.")] GuildUser? targetUser)
+        [SlashCommandParameter(Name = "user", Description = "Target user. Checks self balance if not provided.")] GuildUser? targetUser = null)
     {
         logger.LogDebug("Guild: {Guild} | User: {User} ({UserId})", Context.Guild!.Name, Context.User.Username, Context.User.Id);
 
