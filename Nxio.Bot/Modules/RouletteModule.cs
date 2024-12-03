@@ -4,7 +4,6 @@ using JetBrains.Annotations;
 using NetCord;
 using NetCord.Rest;
 using NetCord.Services.ApplicationCommands;
-// ReSharper disable UnusedType.Global
 
 namespace Nxio.Bot.Modules;
 

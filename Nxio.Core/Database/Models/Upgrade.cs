@@ -4,6 +4,7 @@ using Nxio.Core.Database.Models.Enums;
 namespace Nxio.Core.Database.Models;
 
 [SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
+[SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 public class Upgrade : DbEntity<Guid>
 {
     public string Name { get; set; } = default!;
