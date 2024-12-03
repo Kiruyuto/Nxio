@@ -1,5 +1,8 @@
-﻿namespace Nxio.Core.Database.Models;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace Nxio.Core.Database.Models;
+
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class CoinReaction : DbEntity<Guid>
 {
     public Guid UserId { get; set; }

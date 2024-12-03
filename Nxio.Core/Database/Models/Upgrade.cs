@@ -1,7 +1,9 @@
-﻿using Nxio.Core.Database.Models.Enums;
+﻿using System.Diagnostics.CodeAnalysis;
+using Nxio.Core.Database.Models.Enums;
 
 namespace Nxio.Core.Database.Models;
 
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class Upgrade : DbEntity<Guid>
 {
     public string Name { get; set; } = default!;

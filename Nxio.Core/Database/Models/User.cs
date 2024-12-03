@@ -1,5 +1,8 @@
-﻿namespace Nxio.Core.Database.Models;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace Nxio.Core.Database.Models;
+
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class User : DbEntity<Guid>
 {
     public required ulong UserDiscordId { get; set; }

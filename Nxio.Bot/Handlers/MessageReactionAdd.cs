@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 using NetCord.Gateway;
 using NetCord.Hosting.Gateway;
 using Nxio.Core.Database;
@@ -6,6 +7,7 @@ using Nxio.Core.Database.Models;
 
 namespace Nxio.Bot.Handlers;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers, Reason = "Registered via GatewayEventHandler discovery")]
 [GatewayEvent(nameof(GatewayClient.MessageReactionAdd))]
 public class MessageReactionAdd(ILogger<MessageReactionAdd> logger, IServiceProvider serviceProvider) : IGatewayEventHandler<MessageReactionAddEventArgs>
 {
