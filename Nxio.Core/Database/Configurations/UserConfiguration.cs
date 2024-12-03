@@ -8,19 +8,19 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.HasKey(x => x.Id);
+        builder.HasKey(static x => x.Id);
 
-        builder.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
-        builder.Property(x => x.UserDiscordId).IsRequired();
-        builder.Property(x => x.Coins).IsRequired().HasDefaultValue(0);
-
-        builder
-            .HasMany(x => x.CoinReactions)
-            .WithOne(x => x.User)
-            .HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+        builder.Property(static x => x.Id).ValueGeneratedOnAdd().IsRequired();
+        builder.Property(static x => x.UserDiscordId).IsRequired();
+        builder.Property(static x => x.Coins).IsRequired().HasDefaultValue(0);
 
         builder
-            .HasMany(x => x.Upgrades)
-            .WithMany(x => x.Users);
+            .HasMany(static x => x.CoinReactions)
+            .WithOne(static x => x.User)
+            .HasForeignKey(static x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .HasMany(static x => x.Upgrades)
+            .WithMany(static x => x.Users);
     }
 }
