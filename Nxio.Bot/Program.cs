@@ -16,6 +16,12 @@ public static class Program
         var builder = Host.CreateApplicationBuilder(args);
 
         builder.Services
+            .AddGatewayEventHandlers(typeof(Program).Assembly)
+            .AddApplicationCommands<ApplicationCommandInteraction, ApplicationCommandContext>()
+            .AddDiscordGateway(op =>
+            {
+                op.Intents = GatewayIntents.All; // TODO: Use explicit intents instead
+            })
             .AddDbContext<BaseDbContext>(op =>
             {
                 var connStr = builder.Configuration.GetConnectionString("DbConnection");
@@ -25,14 +31,6 @@ public static class Program
 #if DEBUG
                 op.EnableSensitiveDataLogging();
 #endif
-            });
-
-        builder.Services
-            .AddGatewayEventHandlers(typeof(Program).Assembly)
-            .AddApplicationCommands<ApplicationCommandInteraction, ApplicationCommandContext>()
-            .AddDiscordGateway(op =>
-            {
-                op.Intents = GatewayIntents.All; // TODO: Use explicit intents instead
             });
 
         var host = builder
