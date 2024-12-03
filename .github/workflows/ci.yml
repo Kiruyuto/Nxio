@@ -39,3 +39,24 @@ jobs:
         run: dotnet build --no-restore --configuration Release --verbosity minimal
       - name: "Test"
         run: dotnet test --no-build --no-restore --configuration Release --verbosity normal
+
+
+  inspect-code:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ 'ubuntu-latest' ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v4
+      - name: "Setup .NET"
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.x
+      - name: 'Annotate'
+        uses: JetBrains/ReSharper-InspectCode@v0.8
+        with:
+          solution: ./Nxio.sln
+          swea: true
+          build: true
