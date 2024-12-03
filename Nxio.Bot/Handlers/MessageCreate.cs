@@ -1,4 +1,5 @@
-﻿using NetCord;
+﻿using JetBrains.Annotations;
+using NetCord;
 using NetCord.Gateway;
 using NetCord.Hosting.Gateway;
 using NetCord.Rest;
@@ -7,6 +8,7 @@ using Nxio.Core.Database.Models;
 
 namespace Nxio.Bot.Handlers;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers, Reason = "Registered via GatewayEventHandler discovery")]
 [GatewayEvent(nameof(GatewayClient.MessageCreate))]
 public class MessageCreate(ILogger<MessageCreate> logger, IServiceProvider serviceProvider) : IGatewayEventHandler<Message>
 {
