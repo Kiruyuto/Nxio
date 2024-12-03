@@ -17,7 +17,7 @@ concurrency:
 permissions: write-all
 
 jobs:
-  backend:
+  format-build-test:
     strategy:
       fail-fast: false
       matrix:
