@@ -8,18 +8,18 @@ public class CoinMessageConfiguration : IEntityTypeConfiguration<CoinMessage>
 {
     public void Configure(EntityTypeBuilder<CoinMessage> builder)
     {
-        builder.HasKey(x => x.Id);
+        builder.HasKey(static x => x.Id);
 
-        builder.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
-        builder.Property(x => x.GuildId).IsRequired();
-        builder.Property(x => x.MessageId).IsRequired();
+        builder.Property(static x => x.Id).ValueGeneratedOnAdd().IsRequired();
+        builder.Property(static x => x.GuildId).IsRequired();
+        builder.Property(static x => x.MessageId).IsRequired();
 
-        builder.HasIndex(x => new { x.GuildId, x.MessageId }).IsUnique();
+        builder.HasIndex(static x => new { x.GuildId, x.MessageId }).IsUnique();
 
         builder
-            .HasMany(x => x.Reactions)
-            .WithOne(x => x.CoinMessage)
-            .HasForeignKey(x => x.CoinMessageId)
+            .HasMany(static x => x.Reactions)
+            .WithOne(static x => x.CoinMessage)
+            .HasForeignKey(static x => x.CoinMessageId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

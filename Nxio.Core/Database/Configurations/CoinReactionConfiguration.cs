@@ -8,10 +8,10 @@ public class CoinReactionConfiguration : IEntityTypeConfiguration<CoinReaction>
 {
     public void Configure(EntityTypeBuilder<CoinReaction> builder)
     {
-        builder.HasKey(x => x.Id);
+        builder.HasKey(static x => x.Id);
 
-        builder.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
-        builder.Property(x => x.UserId).IsRequired();
-        builder.Property(x => x.CoinMessageId).IsRequired();
+        builder.Property(static x => x.Id).ValueGeneratedOnAdd().IsRequired();
+        builder.Property(static x => x.UserId).IsRequired();
+        builder.Property(static x => x.CoinMessageId).IsRequired();
     }
 }

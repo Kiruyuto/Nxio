@@ -94,15 +94,15 @@ public class RouletteModule(ILogger<RouletteModule> logger) : ApplicationCommand
     {
         const int take = 30;
         var users = Context.Guild!.Users
-            .Where(x => x.Value.TimeOutUntil != null && x.Value.TimeOutUntil > DateTimeOffset.UtcNow)
-            .OrderByDescending(x => x.Value.TimeOutUntil)
+            .Where(static x => x.Value.TimeOutUntil != null && x.Value.TimeOutUntil > DateTimeOffset.UtcNow)
+            .OrderByDescending(static x => x.Value.TimeOutUntil)
             .Take(take)
             .ToList();
         if (users.Count == 0) return new InteractionMessageProperties { Content = "No users are currently muted!", Flags = MessageFlags.Ephemeral };
 
 
         var str = new StringBuilder();
-        foreach (var u in users.Select(x => x.Value))
+        foreach (var u in users.Select(static x => x.Value))
             str.AppendLine(CultureInfo.InvariantCulture, $"<@{u.Id}> - Expires <t:{u.TimeOutUntil!.Value.ToUnixTimeSeconds()}:R>\n");
 
         var embed = new EmbedProperties
