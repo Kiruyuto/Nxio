@@ -3,6 +3,7 @@
 namespace Nxio.Core.Database.Models;
 
 [SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
+[SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 public class User : DbEntity<Guid>
 {
     public required ulong UserDiscordId { get; set; }
