@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using NetCord;
 using NetCord.Rest;
@@ -10,6 +11,7 @@ using Nxio.Core.Database.Models.Enums;
 
 namespace Nxio.Bot.Modules;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers, Reason = "Registered via module discovery")]
 public class CoinsModule(ILogger<CoinsModule> logger, BaseDbContext context) : ApplicationCommandModule<ApplicationCommandContext>
 {
     [SlashCommand("coins", "Check your or another user coin balance!", Contexts = [InteractionContextType.Guild])]

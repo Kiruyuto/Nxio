@@ -1,11 +1,14 @@
 ﻿using System.Globalization;
 using System.Text;
+using JetBrains.Annotations;
 using NetCord;
 using NetCord.Rest;
 using NetCord.Services.ApplicationCommands;
+// ReSharper disable UnusedType.Global
 
 namespace Nxio.Bot.Modules;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers, Reason = "Registered via module discovery")]
 public class RouletteModule(ILogger<RouletteModule> logger) : ApplicationCommandModule<ApplicationCommandContext>
 {
     private const int HitChanceMax = 15;
