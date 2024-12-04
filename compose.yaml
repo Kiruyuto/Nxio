@@ -6,12 +6,12 @@ volumes:
   nxio-sql-volume:
 
 services:
-  bot:
-    container_name: nxio-bot
-    image: nxio.bot
-    build:
-      context: .
-      dockerfile: Nxio.Bot/Dockerfile
+#  bot:
+#    container_name: nxio-bot
+#    image: nxio.bot
+#    build:
+#      context: .
+#      dockerfile: Nxio.Bot/Dockerfile
 
   db:
     container_name: nxio-db

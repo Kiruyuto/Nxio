@@ -37,7 +37,7 @@ public class ShopModule(ILogger<ShopModule> logger, BaseDbContext context) : App
                 Value = $"Type: `{x.Type.GetEnumMemberName()}`\nLevel: `{x.Level}`/`{x.MaxLevel}`\nValueTotal: `{x.ValuePerLevel * x.Level}`\nValuePerLevel: `{x.ValuePerLevel}`\n",
                 Inline = true
             }).Take(25).ToList(), // TODO: Add paging if there are more than 25 upgrades
-            Color = new Color(0, 255, 0),
+            Color = new Color(0, 255, 0)
         };
 
         return new InteractionMessageProperties { Embeds = [embed] };

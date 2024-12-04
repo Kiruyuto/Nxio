@@ -46,7 +46,7 @@ public class CoinsModule(ILogger<CoinsModule> logger, BaseDbContext context) : A
             Title = "Top 10 users with most coins",
             Description = stringBuilder.ToString(),
             Color = new Color(0, 255, 0),
-            Footer = new EmbedFooterProperties { Text = $"Users with 1+ coin: {userWithCoinsCount}" },
+            Footer = new EmbedFooterProperties { Text = $"Users with 1+ coin: {userWithCoinsCount}" }
         };
 
         return new InteractionMessageProperties { Embeds = [embed] };
