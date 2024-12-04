@@ -17,6 +17,7 @@ public static class RouletteCommand
 
     public static async Task<(EmbedProperties embed, bool ephemeral)> Run(ILogger logger, BaseDbContext dbContext, GuildUser targetUser, GatewayClient botUser, NetCord.User commandAuthor, int timeInMinutes, Guild guild)
     {
+        if (timeInMinutes is < MinValue or > MaxValue) return new ValueTuple<EmbedProperties, bool>(new EmbedProperties { Description = $"Duration must be between {MinValue} and {MaxValue} minutes!", Color = RedColor }, true);
         if (targetUser.Id == commandAuthor.Id) return new ValueTuple<EmbedProperties, bool>(new EmbedProperties { Description = "You can't shoot yourself", Color = RedColor }, true);
         if (targetUser.IsBot) return new ValueTuple<EmbedProperties, bool>(new EmbedProperties { Description = "You can't shoot a bot!" }, true);
 
@@ -64,15 +65,7 @@ public static class RouletteCommand
             dbCommandAuthor.MinutesMutedOthers += timeInMinutes;
             dbCommandVictim.MinutesMutedByOthers += timeInMinutes;
 
-            try
-            {
-                await dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Failed to save changes to the database!");
-                embed.Description += "\nFailed to edit user statistics! Please report it to the author!";
-            }
+            await dbContext.SaveChangesAsync();
 
             return new ValueTuple<EmbedProperties, bool>(embed, false);
         }
@@ -90,15 +83,7 @@ public static class RouletteCommand
 
         dbCommandAuthor.HitAttempts++;
 
-        try
-        {
-            await dbContext.SaveChangesAsync();
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Failed to save changes to the database!");
-            embed.Description += "\nFailed to edit user statistics! Please report it to the author!";
-        }
+        await dbContext.SaveChangesAsync();
 
         embed.Color = RedColor;
         return new ValueTuple<EmbedProperties, bool>(embed, false);
