@@ -4,7 +4,9 @@ using NetCord.Gateway;
 using NetCord.Hosting.Gateway;
 using NetCord.Hosting.Services;
 using NetCord.Hosting.Services.ApplicationCommands;
+using NetCord.Hosting.Services.Commands;
 using NetCord.Services.ApplicationCommands;
+using NetCord.Services.Commands;
 using Nxio.Core.Database;
 
 namespace Nxio.Bot;
@@ -18,6 +20,7 @@ public static class Program
         builder.Services
             .AddGatewayEventHandlers(typeof(Program).Assembly)
             .AddApplicationCommands<ApplicationCommandInteraction, ApplicationCommandContext>()
+            .AddCommands<CommandContext>()
             .AddDiscordGateway(op =>
             {
                 op.Intents = GatewayIntents.All; // TODO: Use explicit intents instead
