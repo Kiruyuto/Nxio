@@ -20,7 +20,7 @@ public static class Program
         builder.Services
             .AddGatewayEventHandlers(typeof(Program).Assembly)
             .AddApplicationCommands<ApplicationCommandInteraction, ApplicationCommandContext>()
-            .AddCommands<CommandContext>()
+            .AddCommands<CommandContext>(op => op.IgnoreCase = true)
             .AddDiscordGateway(op =>
             {
                 op.Intents = GatewayIntents.All; // TODO: Use explicit intents instead
