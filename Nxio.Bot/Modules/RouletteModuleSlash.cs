@@ -25,7 +25,7 @@ public class RouletteModuleSlash(ILogger<RouletteModuleSlash> logger, BaseDbCont
     {
         if (Context.Guild == null) return new InteractionMessageProperties { Content = "This command can only be used in a guild!", Flags = MessageFlags.Ephemeral };
         var (embed, ephemeral) = await RouletteCommand.Run(logger, dbContext, targetUser, Context.Client, Context.User, timeInMinutes, Context.Guild);
-        return new InteractionMessageProperties { Embeds = [embed], Flags = ephemeral ? MessageFlags.Ephemeral : MessageFlags.SuppressNotifications };
+        return new InteractionMessageProperties { Embeds = [embed], Flags = ephemeral ? MessageFlags.Ephemeral : null, };
     }
 
     [SlashCommand("test-luck", "Test your luck!", Contexts = [InteractionContextType.Guild])]
