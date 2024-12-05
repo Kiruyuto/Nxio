@@ -19,7 +19,7 @@ public static class Program
 
         builder.Services
             .AddGatewayEventHandlers(typeof(Program).Assembly)
-            .AddApplicationCommands<ApplicationCommandInteraction, ApplicationCommandContext>()
+            .AddApplicationCommands<ApplicationCommandInteraction, ApplicationCommandContext>(op => op.ResultHandler = new ApplicationCommandResultHandler<ApplicationCommandContext>(MessageFlags.Ephemeral))
             .AddCommands<CommandContext>(op => op.IgnoreCase = true)
             .AddDiscordGateway(op =>
             {
