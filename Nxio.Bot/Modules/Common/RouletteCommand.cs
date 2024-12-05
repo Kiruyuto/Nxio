@@ -60,7 +60,7 @@ public static class RouletteCommand
             await guild.ModifyUserAsync(targetUser.Id, op => { op.WithTimeOutUntil(DateTimeOffset.UtcNow.AddMinutes(timeInMinutes)); });
 
             embed.Color = GreenColor;
-            embed.Description = $"<@{targetUser.Id}> was hit by <@{commandAuthor.Id}> and has been muted for {timeInMinutes} minutes!";
+            embed.Description = $"<@{targetUser.Id}> was hit by <@{commandAuthor.Id}> and has been muted for `{timeInMinutes}m`!";
             dbCommandAuthor.SuccessfulHits++;
             dbCommandAuthor.MinutesMutedOthers += timeInMinutes;
             dbCommandVictim.MinutesMutedByOthers += timeInMinutes;
@@ -77,7 +77,7 @@ public static class RouletteCommand
         else
         {
             await guild.ModifyUserAsync(commandAuthor.Id, op => { op.WithTimeOutUntil(DateTimeOffset.UtcNow.AddMinutes(timeInMinutes)); });
-            embed.Description = $"<@{commandAuthor.Id}> tried to hit <@{targetUser.Id}> for `{timeInMinutes}m` but missed!\nFor being a bad shot, they have been muted for {timeInMinutes} minutes!";
+            embed.Description = $"<@{commandAuthor.Id}> tried to hit <@{targetUser.Id}> for `{timeInMinutes}m` but missed!\nFor being a bad shot, they have been timed out!";
             dbCommandAuthor.MinutesMutedSelf += timeInMinutes;
         }
 
