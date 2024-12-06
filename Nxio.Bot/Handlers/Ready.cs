@@ -1,9 +1,11 @@
-﻿using NetCord.Gateway;
+﻿using JetBrains.Annotations;
+using NetCord.Gateway;
 using NetCord.Hosting.Gateway;
 using NetCord.Rest;
 
 namespace Nxio.Bot.Handlers;
 
+[UsedImplicitly(ImplicitUseTargetFlags.WithMembers, Reason = "Registered via GatewayEventHandler discovery")]
 [GatewayEvent(nameof(GatewayClient.Ready))]
 public class Ready(ILogger<Ready> logger) : IGatewayEventHandler<ReadyEventArgs>
 {
