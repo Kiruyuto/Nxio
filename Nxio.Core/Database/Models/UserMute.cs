@@ -1,6 +1,6 @@
 ﻿namespace Nxio.Core.Database.Models;
 
-public class UserMutes : DbEntity<Guid>
+public class UserMute : DbEntity<Guid>
 {
     public required ulong UserId { get; set; }
     public required ulong GuildId { get; set; }

@@ -19,7 +19,6 @@ public static class Program
         var builder = Host.CreateApplicationBuilder(args);
 
         builder.Services
-            .AddHostedService<MuteWorker>()
             .AddGatewayEventHandlers(typeof(Program).Assembly)
             .AddApplicationCommands<ApplicationCommandInteraction, ApplicationCommandContext>(op => op.ResultHandler = new ApplicationCommandResultHandler<ApplicationCommandContext>(MessageFlags.Ephemeral))
             .AddCommands<CommandContext>(op => op.IgnoreCase = true)
@@ -36,7 +35,8 @@ public static class Program
 #if DEBUG
                 op.EnableSensitiveDataLogging();
 #endif
-            });
+            })
+            .AddSingleton<IHostedService, MuteWorker>();
 
         var host = builder
             .Build()

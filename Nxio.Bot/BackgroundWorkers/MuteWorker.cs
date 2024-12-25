@@ -6,7 +6,7 @@ using Nxio.Core.Extensions;
 
 namespace Nxio.Bot.BackgroundWorkers;
 
-public class MuteWorker(ILogger<MuteWorker> logger, BaseDbContext dbContext, RestClient client) : BackgroundService
+public class MuteWorker(ILogger<MuteWorker> logger, IServiceProvider serviceProvider, RestClient client) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -16,6 +16,9 @@ public class MuteWorker(ILogger<MuteWorker> logger, BaseDbContext dbContext, Res
         while (!stoppingToken.IsCancellationRequested)
         {
             logger.LogDebug("Worker running at: {Time}", DateTimeOffset.UtcNow);
+
+            await using var scope = serviceProvider.CreateAsyncScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<BaseDbContext>();
 
             var mutedUsers = await dbContext.UserMutes.Where(x => x.MuteEndUtc < DateTimeOffset.UtcNow).ToListAsync(cancellationToken: stoppingToken);
             if (mutedUsers.Count != 0)
@@ -44,10 +47,13 @@ public class MuteWorker(ILogger<MuteWorker> logger, BaseDbContext dbContext, Res
                     if (muteRole != 0)
                         await client.RemoveGuildUserRoleAsync(userId: user.UserId, guildId: user.GuildId, roleId: muteRole, cancellationToken: stoppingToken);
 
-                    foreach (var roleId in user.RoleIdsBeforeMute.Split(';'))
+                    foreach (var roleId in user.RoleIdsBeforeMute.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)))
                     {
-                        if (!string.IsNullOrWhiteSpace(roleId) && ulong.TryParse(roleId, out var roleIdParsed))
+                        if (ulong.TryParse(roleId, out var roleIdParsed))
+                        {
+                            logger.LogDebug("Adding role {RoleId} to user {UserId} in guild {GuildId}", roleIdParsed, user.UserId, user.GuildId);
                             await client.AddGuildUserRoleAsync(userId: user.UserId, guildId: user.GuildId, roleId: roleIdParsed, cancellationToken: stoppingToken);
+                        }
                     }
 
                     dbContext.UserMutes.Remove(user);
@@ -58,7 +64,7 @@ public class MuteWorker(ILogger<MuteWorker> logger, BaseDbContext dbContext, Res
                     await dbContext.SaveChangesAsync(cancellationToken: stoppingToken);
             }
 
-            await Task.Delay(60 * 1_000, stoppingToken);
+            await Task.Delay(30 * 1_000, stoppingToken);
         }
 
         logger.LogDebug("Worker stopped at: {Time}", DateTimeOffset.UtcNow);

@@ -4,9 +4,9 @@ using Nxio.Core.Database.Models;
 
 namespace Nxio.Core.Database.Configurations;
 
-public class UserMutesConfiguration : IEntityTypeConfiguration<UserMutes>
+public class UserMutesConfiguration : IEntityTypeConfiguration<UserMute>
 {
-    public void Configure(EntityTypeBuilder<UserMutes> builder)
+    public void Configure(EntityTypeBuilder<UserMute> builder)
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.UserId).IsRequired();
