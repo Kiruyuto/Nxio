@@ -24,10 +24,12 @@ public static class MuteCommand
         var guildMuteRole = guildSetting.GetGuildSettingValue<ulong>();
 
 
+        var botRoles = (await guild.GetUserAsync(botUser.Id)).GetRoles(guild).ToList();
         var targetRoles = targetUser.GetRoles(guild).ToList();
-        // var triggerRolePos = (await guild.GetUserAsync(commandAuthor.Id)).GetRoles(guild);
-        // if (targetRoles.Any(x => x.Position > triggerRolePos)) return "You can't shoot someone with a higher role than you!";
-        if (targetRoles.Any(x => (x.Permissions & Permissions.Administrator) != 0)) return new ValueTuple<EmbedProperties, bool>(new EmbedProperties { Description = "You mute an admin!", Color = RedColor }, true);
+        var triggerRolePos = (await guild.GetUserAsync(commandAuthor.Id)).GetRoles(guild);
+        if (targetRoles.Any(x => triggerRolePos.Any(y=>x.Position>y.Position))) return new ValueTuple<EmbedProperties, bool>(new EmbedProperties { Description = "You can't mute with someone of higher role than you!", Color = RedColor }, true);
+        if(targetRoles.Any(x=>botRoles.Any(y=>x.Position>y.Position))) return new ValueTuple<EmbedProperties, bool>(new EmbedProperties { Description = "You can't mute someone with higher role than me!", Color = RedColor }, true);
+        if (targetRoles.Any(x => (x.Permissions & Permissions.Administrator) != 0)) return new ValueTuple<EmbedProperties, bool>(new EmbedProperties { Description = "You can't mute an admin!", Color = RedColor }, true);
 
         var dbCommandVictim = await dbContext.UserMutes.FirstOrDefaultAsync(x => x.UserId == targetUser.Id);
         if (dbCommandVictim != null) dbCommandVictim.MuteEndUtc = DateTimeOffset.UtcNow.AddMinutes(timeInMinutes);
