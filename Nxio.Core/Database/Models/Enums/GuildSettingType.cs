@@ -8,5 +8,5 @@ public enum GuildSettingType
 {
     Int = 0,
     Bool = 1,
-    Ulong=2
+    Ulong = 2
 }
