@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using NetCord;
 using NetCord.Rest;
 using NetCord.Services.ApplicationCommands;
-using Nxio.Core;
 using Nxio.Core.Database;
 using Nxio.Core.Database.Models.Enums;
 using Nxio.Core.Extensions;

@@ -11,7 +11,7 @@ public class MuteWorker(ILogger<MuteWorker> logger, BaseDbContext dbContext, Res
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         logger.LogDebug("Worker started at: {Time}", DateTimeOffset.UtcNow);
-        await Task.Delay(2*60 * 1_000, stoppingToken); // Delay for 2 minutes to allow the bot to fully start
+        await Task.Delay(2 * 60 * 1_000, stoppingToken); // Delay for 2 minutes to allow the bot to fully start
 
         while (!stoppingToken.IsCancellationRequested)
         {
