@@ -1,4 +1,6 @@
-﻿name: nxio
+﻿version: '3.4'
+
+name: nxio
 networks:
   nxio-network:
     driver: bridge
@@ -12,6 +14,8 @@ services:
 #    build:
 #      context: .
 #      dockerfile: Nxio.Bot/Dockerfile
+#    networks:
+#      - nxio-network
 
   db:
     container_name: nxio-db
