@@ -7,6 +7,7 @@ using NetCord.Hosting.Services.ApplicationCommands;
 using NetCord.Hosting.Services.Commands;
 using NetCord.Services.ApplicationCommands;
 using NetCord.Services.Commands;
+using Nxio.Bot.BackgroundWorkers;
 using Nxio.Core.Database;
 
 namespace Nxio.Bot;
@@ -18,6 +19,7 @@ public static class Program
         var builder = Host.CreateApplicationBuilder(args);
 
         builder.Services
+            .AddHostedService<MuteWorker>()
             .AddGatewayEventHandlers(typeof(Program).Assembly)
             .AddApplicationCommands<ApplicationCommandInteraction, ApplicationCommandContext>(op => op.ResultHandler = new ApplicationCommandResultHandler<ApplicationCommandContext>(MessageFlags.Ephemeral))
             .AddCommands<CommandContext>(op => op.IgnoreCase = true)
@@ -27,7 +29,7 @@ public static class Program
             })
             .AddDbContext<BaseDbContext>(op =>
             {
-                var connStr = builder.Configuration.GetConnectionString("DbConnection");
+                var connStr = builder.Configuration.GetConnectionString("Database");
                 if (string.IsNullOrWhiteSpace(connStr)) throw new ArgumentNullException(paramName: nameof(connStr), message: "DbConnection not set in configuration!");
 
                 op.UseSqlServer(connectionString: connStr);

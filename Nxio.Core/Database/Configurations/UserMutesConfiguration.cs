@@ -11,8 +11,8 @@ public class UserMutesConfiguration : IEntityTypeConfiguration<UserMutes>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.UserId).IsRequired();
         builder.Property(x => x.GuildId).IsRequired();
-        builder.Property(x => x.MuteStart).IsRequired();
-        builder.Property(x => x.MuteEnd).IsRequired();
+        builder.Property(x => x.MuteStartUtc).IsRequired();
+        builder.Property(x => x.MuteEndUtc).IsRequired();
         builder.Property(x => x.RoleIdsBeforeMute).IsRequired().HasMaxLength(6_000); // Server cannot have more than 250 (thus 250*SnowflakeId) roles + Separators + Some extra error margin
     }
 }
