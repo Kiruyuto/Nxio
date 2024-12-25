@@ -2,12 +2,10 @@
 using NetCord;
 using NetCord.Gateway;
 using NetCord.Rest;
-using Nxio.Core;
 using Nxio.Core.Database;
 using Nxio.Core.Database.Models;
 using Nxio.Core.Database.Models.Enums;
 using Nxio.Core.Extensions;
-using User = Nxio.Core.Database.Models.User;
 
 namespace Nxio.Bot.Modules.Common;
 

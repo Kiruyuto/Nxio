@@ -64,7 +64,7 @@ public class MuteWorker(ILogger<MuteWorker> logger, IServiceProvider serviceProv
                     await dbContext.SaveChangesAsync(cancellationToken: stoppingToken);
             }
 
-            await Task.Delay(60 * 1_000, stoppingToken);
+            await Task.Delay(30 * 1_000, stoppingToken);
         }
 
         logger.LogDebug("Worker stopped at: {Time}", DateTimeOffset.UtcNow);
