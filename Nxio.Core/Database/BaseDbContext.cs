@@ -17,4 +17,6 @@ public class BaseDbContext(DbContextOptions<BaseDbContext> options) : DbContext(
     public DbSet<CoinReaction> CoinReactions { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;
     public DbSet<Upgrade> Upgrades { get; set; } = default!;
+    public DbSet<GuildSettings> GuildSettings { get; set; } = default!;
+    public DbSet<UserMutes> UserMutes { get; set; } = default!;
 }
