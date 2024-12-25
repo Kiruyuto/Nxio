@@ -9,7 +9,7 @@ permissions: write-all
 jobs:
   release-please:
     name: 'Release-Please'
-    runs-on: [ 'ubuntu-latest' ]
+    runs-on: [ 'ubuntu-24.04' ]
     outputs:
         releases_created: ${{ steps.run-release-please.outputs.releases_created }}
         tag_name: ${{ steps.run-release-please.outputs.tag_name }}
@@ -35,7 +35,7 @@ jobs:
 
   release-nxio:
     name: 'Nxio - ${{ matrix.rid }} - ${{ matrix.self-contained }}'
-    runs-on: [ 'ubuntu-latest' ]
+    runs-on: [ 'ubuntu-24.04' ]
     needs: 'release-please'
     strategy:
       fail-fast: false
