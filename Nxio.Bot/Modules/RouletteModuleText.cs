@@ -10,7 +10,7 @@ namespace Nxio.Bot.Modules;
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers, Reason = "Registered via module discovery")]
 public class RouletteModuleText(ILogger<RouletteModuleText> logger, BaseDbContext dbContext) : CommandModule<CommandContext>
 {
-    [Command("roulette", "roll", "mute", "r")]
+    [Command("roulette", "roll", "r")]
     public async Task<ReplyMessageProperties> Roulette(
         [CommandParameter(Name = "user")] GuildUser targetUser,
         [CommandParameter(Name = "duration")] int timeInMinutes

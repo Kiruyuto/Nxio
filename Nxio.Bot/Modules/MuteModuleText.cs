@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using NetCord;
 using NetCord.Rest;
+using NetCord.Services;
 using NetCord.Services.Commands;
 using Nxio.Bot.Modules.Common;
 using Nxio.Core.Database;
@@ -11,9 +12,11 @@ namespace Nxio.Bot.Modules;
 public class MuteModuleText(ILogger<MuteModuleText> logger, BaseDbContext dbContext) : CommandModule<CommandContext>
 {
     [Command("mute", "m")]
+    [RequireUserPermissions<CommandContext>(Permissions.ModerateUsers, "You need `{0}` permission to use this command!")]
+    [RequireBotPermissions<CommandContext>(Permissions.Administrator, "I am missing `{0}` permission to execute this command!")]
     public async Task<ReplyMessageProperties> Mute(
         [CommandParameter(Name = "user")] GuildUser targetUser,
-        [CommandParameter(Name = "duration")] int timeInMinutes, // TODO" Rewrite to accept 12h, 1d, 1w, etc. syntax
+        [CommandParameter(Name = "duration")] int timeInMinutes, // TODO: Rewrite to accept 12h, 1d, 1w, etc. syntax
         [CommandParameter(Name = "reason", Remainder = true)] string reason = "No reason provided"
     )
     {

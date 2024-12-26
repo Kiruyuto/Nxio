@@ -10,12 +10,12 @@ public class MuteWorker(ILogger<MuteWorker> logger, IServiceProvider serviceProv
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        logger.LogDebug("Worker started at: {Time}", DateTimeOffset.UtcNow);
-        await Task.Delay(2 * 60 * 1_000, stoppingToken); // Delay for 2 minutes to allow the bot to fully start
+        logger.LogDebug("Mute Worker started at: {Time}", DateTimeOffset.UtcNow);
+        await Task.Delay(60 * 1_000, stoppingToken); // Delay worker start in order to allow the bot to initialize properly
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            logger.LogDebug("Worker running at: {Time}", DateTimeOffset.UtcNow);
+            logger.LogDebug("Mute Worker running at: {Time}", DateTimeOffset.UtcNow);
 
             await using var scope = serviceProvider.CreateAsyncScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<BaseDbContext>();
@@ -35,25 +35,23 @@ public class MuteWorker(ILogger<MuteWorker> logger, IServiceProvider serviceProv
                     var fetchedUser = await client.GetGuildUserAsync(userId: user.UserId, guildId: user.GuildId, cancellationToken: stoppingToken);
                     if (fetchedUser.IsBot || fetchedUser.IsSystemUser == true) continue;
 
-                    var targetSetting = mutedRolesIds.FirstOrDefault(x => x.GuildId == user.GuildId);
-                    if (targetSetting == null)
+                    var targetGuildSetting = mutedRolesIds.FirstOrDefault(x => x.GuildId == user.GuildId);
+                    if (targetGuildSetting == null)
                     {
                         logger.LogInformation("Unable to remove mute role from user {UserId} in guild {GuildId} - no default mute role set", user.UserId, user.GuildId);
                         continue;
                     }
 
-                    var mutedRoleSettingValue = targetSetting.GetGuildSettingValue<ulong>();
+                    var mutedRoleSettingValue = targetGuildSetting.GetGuildSettingValue<ulong>();
                     var muteRole = fetchedUser.RoleIds.FirstOrDefault(x => x == mutedRoleSettingValue);
                     if (muteRole != 0)
                         await client.RemoveGuildUserRoleAsync(userId: user.UserId, guildId: user.GuildId, roleId: muteRole, cancellationToken: stoppingToken);
 
                     foreach (var roleId in user.RoleIdsBeforeMute.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)))
                     {
-                        if (ulong.TryParse(roleId, out var roleIdParsed))
-                        {
-                            logger.LogDebug("Adding role {RoleId} to user {UserId} in guild {GuildId}", roleIdParsed, user.UserId, user.GuildId);
-                            await client.AddGuildUserRoleAsync(userId: user.UserId, guildId: user.GuildId, roleId: roleIdParsed, cancellationToken: stoppingToken);
-                        }
+                        if (!ulong.TryParse(roleId, out var roleIdParsed)) continue;
+                        logger.LogDebug("Adding role {RoleId} to user {UserId} in guild {GuildId}", roleIdParsed, user.UserId, user.GuildId);
+                        await client.AddGuildUserRoleAsync(userId: user.UserId, guildId: user.GuildId, roleId: roleIdParsed, cancellationToken: stoppingToken);
                     }
 
                     dbContext.UserMutes.Remove(user);
@@ -67,6 +65,6 @@ public class MuteWorker(ILogger<MuteWorker> logger, IServiceProvider serviceProv
             await Task.Delay(30 * 1_000, stoppingToken);
         }
 
-        logger.LogDebug("Worker stopped at: {Time}", DateTimeOffset.UtcNow);
+        logger.LogDebug("Mute Worker stopped at: {Time}", DateTimeOffset.UtcNow);
     }
 }
