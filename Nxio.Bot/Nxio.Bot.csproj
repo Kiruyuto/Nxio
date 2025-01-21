@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <LangVersion>Default</LangVersion>
-    <Version>0.0.0</Version>
+    <Version>1.0.0</Version>
     <AnalysisMode>Recommended</AnalysisMode>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -36,8 +36,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1"/>
     <PackageReference Include="NetCord.Hosting" Version="1.0.0-alpha.339"/>
-    <PackageReference Include="NetCord.Hosting.Services" Version="1.0.0-alpha.339" />
-    <PackageReference Include="NetCord.Services" Version="1.0.0-alpha.339" />
+    <PackageReference Include="NetCord.Hosting.Services" Version="1.0.0-alpha.339"/>
+    <PackageReference Include="NetCord.Services" Version="1.0.0-alpha.339"/>
     <PackageReference Include="SonarAnalyzer.CSharp" Version="10.5.0.109200">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -45,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Nxio.Core\Nxio.Core.csproj" />
+    <ProjectReference Include="..\Nxio.Core\Nxio.Core.csproj"/>
   </ItemGroup>
 
 </Project>
