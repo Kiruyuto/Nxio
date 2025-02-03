@@ -35,10 +35,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1"/>
-    <PackageReference Include="NetCord.Hosting" Version="1.0.0-alpha.339"/>
-    <PackageReference Include="NetCord.Hosting.Services" Version="1.0.0-alpha.339" />
-    <PackageReference Include="NetCord.Services" Version="1.0.0-alpha.339" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.5.0.109200">
+    <PackageReference Include="NetCord.Hosting" Version="1.0.0-alpha.343"/>
+    <PackageReference Include="NetCord.Hosting.Services" Version="1.0.0-alpha.343" />
+    <PackageReference Include="NetCord.Services" Version="1.0.0-alpha.343" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.6.0.109712">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
