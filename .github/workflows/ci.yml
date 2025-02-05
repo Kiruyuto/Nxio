@@ -25,7 +25,7 @@ jobs:
       - name: "Setup .NET"
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.x
+          dotnet-version: 9.0.102
       - name: "Restore dependencies"
         run: dotnet restore
       - name: "Format"
@@ -48,7 +48,7 @@ jobs:
       - name: "Setup .NET"
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.x
+          dotnet-version: 9.0.102
       - name: 'Annotate'
         uses: JetBrains/ReSharper-InspectCode@v0.8
         with:
@@ -71,7 +71,7 @@ jobs:
     - name: "Setup .NET"
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.x
+        dotnet-version: 9.0.102
     - name: 'Initialize CodeQL'
       uses: github/codeql-action/init@v3
       with:
